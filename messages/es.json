@@ -1,0 +1,112 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar Cambios",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "logout": "Cerrar Sesión"
+  },
+  "navigation": {
+    "home": "Panel de Control",
+    "inventory": "Inventario",
+    "shelf": "Estante",
+    "reports": "Informes",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "administrator": "Administrador"
+  },
+  "settings": {
+    "title": "Configuración",
+    "general": "Configuración General",
+    "appearance": "Apariencia y Localización",
+    "dataManagement": "Gestión de Datos",
+    "signOut": "Cerrar Sesión",
+    "logoutDescription": "Cerrar sesión de tu cuenta",
+    "defaultCurrency": "Moneda Predeterminada",
+    "lowStockThreshold": "Umbral de Stock Bajo",
+    "autoGenerateSKU": "Generar SKU Automáticamente",
+    "autoGenerateSKUDescription": "Crear automáticamente un SKU único para nuevos artículos",
+    "updateCategory": "Actualizar Categoría",
+    "language": "Idioma",
+    "dateFormat": "Formato de Fecha",
+    "itemsPerPage": "Artículos por Página",
+    "theme": "Tema",
+    "themeDescription": "Cambiar entre modo claro y oscuro",
+    "exportData": "Exportar Datos",
+    "exportDescription": "Exportar todos tus datos de inventario como archivo CSV",
+    "importData": "Importar Datos vía CSV",
+    "importDescription": "Importar datos de inventario desde archivo CSV"
+  },
+  "inventory": {
+    "title": "Inventario",
+    "addProduct": "Añadir Producto",
+    "showing": "Mostrando",
+    "of": "de",
+    "results": "resultados",
+    "allCategories": "Todas las Categorías",
+    "productName": "Nombre del Producto",
+    "sku": "SKU",
+    "category": "Categoría",
+    "quantity": "Cantidad",
+    "price": "Precio",
+    "actions": "Acciones",
+    "noProducts": "Aún no hay productos en el inventario.",
+    "noMatch": "No hay productos que coincidan con tu búsqueda.",
+    "noItems": "No se encontraron artículos de inventario"
+  },
+  "product": {
+    "title": "Agregar Nuevo Producto",
+    "productName": "Nombre del Producto",
+    "description": "Descripción",
+    "category": "Categoría",
+    "quantity": "Cantidad",
+    "unitPrice": "Precio Unitario",
+    "sku": "SKU",
+    "image": "Imagen del Producto",
+    "submit": "Agregar Producto",
+    "submitting": "Agregando Producto..."
+  },
+  "components": {
+    "categoryModal": {
+      "title": "Actualizar Categorías",
+      "addNew": "Agregar Nueva Categoría",
+      "enterName": "Ingrese el nombre de la categoría",
+      "current": "Categorías Actuales",
+      "saving": "Guardando..."
+    },
+    "currencyInfo": {
+      "title": "Conversión de Moneda Activa",
+      "description": "Los precios se almacenan en Naira Nigeriana (NGN) y se muestran en {currency}. Las tasas de cambio se actualizan cada hora."
+    },
+    "imageUpload": {
+      "title": "Subir Imagen del Producto",
+      "uploading": "Subiendo...",
+      "uploadTitle": "Subir Imagen del Producto",
+      "dragDrop": "Arrastra y suelta una imagen o haz clic (Máx 5MB)",
+      "pleaseWait": "Por favor espera",
+      "removeImage": "Eliminar Imagen",
+      "selectImage": "Seleccionar Imagen",
+      "fileSizeError": "El tamaño de la imagen debe ser menor a 5MB",
+      "fileTypeError": "Por favor selecciona un archivo de imagen",
+      "uploadError": "Error al subir la imagen. Por favor intenta de nuevo."
+    },
+    "logout": {
+      "button": "Cerrar Sesión",
+      "loggingOut": "Cerrando sesión..."
+    },
+    "itemsPerPage": {
+      "label": "Artículos por Página",
+      "items": "artículos",
+      "description": "Elija cuántos artículos mostrar por página en el inventario"
+    },
+    "languageSelector": {
+      "label": "Idioma",
+      "description": "Elija su idioma preferido para la interfaz"
+    }
+  }
+}

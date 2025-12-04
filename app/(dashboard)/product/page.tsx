@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { ImageUpload } from '@/app/components/ImageUpload';
 import { useCurrency } from '@/app/hooks/useCurrency';
 import { CurrencyInfo } from '@/app/components/CurrencyInfo';
+import { useTranslations } from '@/app/hooks/useTranslations';
 
 interface ProductFormData {
   productName: string;
@@ -28,6 +29,7 @@ interface CategoriesResponse {
 
 export default function AddProductPage() {
   const router = useRouter();
+  const { t } = useTranslations();
   const { convertToBase, userCurrency, getCurrencySymbol } = useCurrency();
   const {
     register,
@@ -112,7 +114,7 @@ export default function AddProductPage() {
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Add New Product
+          {t('product.title')}
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           Fill in the details below to add a new product to the inventory
@@ -143,7 +145,7 @@ export default function AddProductPage() {
               {/* Product Name */}
               <div>
                 <label htmlFor="productName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Product Name
+                  {t('product.productName')}
                 </label>
                 <input
                   type="text"
@@ -170,7 +172,7 @@ export default function AddProductPage() {
               {/* Description */}
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Description
+                  {t('product.description')}
                 </label>
                 <textarea
                   id="description"
@@ -185,7 +187,7 @@ export default function AddProductPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Category
+                    {t('product.category')}
                   </label>
                   <select
                     id="category"
@@ -210,7 +212,7 @@ export default function AddProductPage() {
 
                 <div>
                   <label htmlFor="sku" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    SKU
+                    {t('product.sku')}
                   </label>
                   <input
                     type="text"
@@ -233,7 +235,7 @@ export default function AddProductPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Quantity
+                    {t('product.quantity')}
                   </label>
                   <input
                     type="number"
@@ -257,7 +259,7 @@ export default function AddProductPage() {
 
                 <div>
                   <label htmlFor="unitPrice" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Unit Price ({getCurrencySymbol()})
+                    {t('product.unitPrice')} ({getCurrencySymbol()})
                   </label>
                   <input
                     type="number"
@@ -287,7 +289,7 @@ export default function AddProductPage() {
                   href="/dashboard/inventory"
                   className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </Link>
                 <button
                   type="submit"
@@ -297,10 +299,10 @@ export default function AddProductPage() {
                   {isPending ? (
                     <>
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Saving...
+                      {t('product.submitting')}
                     </>
                   ) : (
-                    'Save Product'
+                    t('product.submit')
                   )}
                 </button>
               </div>

@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 import { useCurrency } from '@/app/hooks/useCurrency';
+import { useSettingsStore } from '@/app/store/settingsStore';
+import { useTranslations } from '@/app/hooks/useTranslations';
 
 interface InventoryItem {
   _id: string;
@@ -33,10 +35,12 @@ interface CategoriesResponse {
 }
 
 export default function InventoryPage() {
+  const { t } = useTranslations();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All Categories');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const { convertFromBase, formatCurrency } = useCurrency();
+  const { convertFromBase, formatCurrency, userCurrency } = useCurrency();
+  const { itemsPerPage } = useSettingsStore();
 
   // Fetch categories
   const { data: categoriesData } = useQuery<CategoriesResponse>({
@@ -57,7 +61,7 @@ export default function InventoryPage() {
     },
   });
 
-  const categories = ['All Categories', ...(categoriesData?.categories || [])];
+  const categories = [t('inventory.allCategories'), ...(categoriesData?.categories || [])];
 
   const { data, isLoading, error } = useQuery<InventoryResponse>({
     queryKey: ['inventory'],
@@ -79,7 +83,7 @@ export default function InventoryPage() {
 
   const inventory = data?.items || [];
   const totalResults = data?.count || 0;
-  const resultsPerPage = 16;
+  const resultsPerPage = itemsPerPage;
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
   // Filter inventory based on search and category
@@ -89,7 +93,7 @@ export default function InventoryPage() {
       item.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.category.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = selectedCategory === 'All Categories' || item.category === selectedCategory;
+    const matchesCategory = selectedCategory === '' || selectedCategory === t('inventory.allCategories') || item.category === selectedCategory;
     
     return matchesSearch && matchesCategory;
   });
@@ -100,7 +104,7 @@ export default function InventoryPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-            Inventory
+            {t('inventory.title')}
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Manage and track all products in your inventory
@@ -111,7 +115,7 @@ export default function InventoryPage() {
           className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#162660] hover:bg-[#162660]/90 text-white font-semibold rounded-lg shadow-md transition-all"
         >
           <Plus className="w-5 h-5 mr-2" />
-          Add New Item
+          {t('inventory.addProduct')}
         </Link>
       </div>
 
@@ -129,7 +133,7 @@ export default function InventoryPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search by product name, SKU, or category"
+              placeholder={t('common.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
@@ -161,7 +165,7 @@ export default function InventoryPage() {
         ) : filteredInventory.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400">
-              {inventory.length === 0 ? 'No products in inventory yet.' : 'No products match your search.'}
+              {inventory.length === 0 ? t('inventory.noProducts') : t('inventory.noMatch')}
             </p>
           </div>
         ) : (
@@ -171,22 +175,22 @@ export default function InventoryPage() {
                 <thead>
                   <tr className="border-b border-gray-200 dark:border-gray-800">
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Product
+                      {t('inventory.productName')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      SKU
+                      {t('inventory.sku')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Category
+                      {t('inventory.category')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Quantity
+                      {t('inventory.quantity')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Unit Price
+                      {t('inventory.price')}
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                      Actions
+                      {t('inventory.actions')}
                     </th>
                   </tr>
                 </thead>
@@ -221,7 +225,7 @@ export default function InventoryPage() {
                         {item.quantity}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        {formatCurrency(convertFromBase(item.unitPrice, 'NGN'))}
+                        {formatCurrency(convertFromBase(item.unitPrice, userCurrency))}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex items-center space-x-2">
@@ -242,7 +246,7 @@ export default function InventoryPage() {
             {/* Pagination */}
             <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                Showing {filteredInventory.length} of {totalResults} results
+                {t('inventory.showing')} {filteredInventory.length} {t('inventory.of')} {totalResults} {t('inventory.results')}
               </div>
               <div className="flex items-center space-x-2">
                 <button

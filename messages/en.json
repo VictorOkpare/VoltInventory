@@ -1,0 +1,112 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "logout": "Logout"
+  },
+  "navigation": {
+    "home": "Dashboard",
+    "inventory": "Inventory",
+    "shelf": "Shelf",
+    "reports": "Reports",
+    "settings": "Settings",
+    "help": "Help",
+    "administrator": "Administrator"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General Settings",
+    "appearance": "Appearance & Localization",
+    "dataManagement": "Data Management",
+    "signOut": "Sign Out",
+    "logoutDescription": "Log out of your account",
+    "defaultCurrency": "Default Currency",
+    "lowStockThreshold": "Low Stock Threshold",
+    "autoGenerateSKU": "Auto-Generate SKU",
+    "autoGenerateSKUDescription": "Automatically create a unique SKU for new items",
+    "updateCategory": "Update Category",
+    "language": "Language",
+    "dateFormat": "Date Format",
+    "itemsPerPage": "Items per Page",
+    "theme": "Theme",
+    "themeDescription": "Switch between light and dark mode",
+    "exportData": "Export Data",
+    "exportDescription": "Export all your inventory data as a CSV file",
+    "importData": "Import Data via CSV",
+    "importDescription": "Import inventory data from a CSV file"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "addProduct": "Add Product",
+    "showing": "Showing",
+    "of": "of",
+    "results": "results",
+    "allCategories": "All Categories",
+    "productName": "Product Name",
+    "sku": "SKU",
+    "category": "Category",
+    "quantity": "Quantity",
+    "price": "Price",
+    "actions": "Actions",
+    "noProducts": "No products in inventory yet.",
+    "noMatch": "No products match your search.",
+    "noItems": "No inventory items found"
+  },
+  "product": {
+    "title": "Add New Product",
+    "productName": "Product Name",
+    "description": "Description",
+    "category": "Category",
+    "quantity": "Quantity",
+    "unitPrice": "Unit Price",
+    "sku": "SKU",
+    "image": "Product Image",
+    "submit": "Add Product",
+    "submitting": "Adding Product..."
+  },
+  "components": {
+    "categoryModal": {
+      "title": "Update Categories",
+      "addNew": "Add New Category",
+      "enterName": "Enter category name",
+      "current": "Current Categories",
+      "saving": "Saving..."
+    },
+    "currencyInfo": {
+      "title": "Currency Conversion Active",
+      "description": "Prices are stored in Nigerian Naira (NGN) and displayed in {currency}. Exchange rates update hourly."
+    },
+    "imageUpload": {
+      "title": "Upload Product Image",
+      "uploading": "Uploading...",
+      "uploadTitle": "Upload Product Image",
+      "dragDrop": "Drag & drop an image or click (Max 5MB)",
+      "pleaseWait": "Please wait",
+      "removeImage": "Remove Image",
+      "selectImage": "Select Image",
+      "fileSizeError": "Image size should be less than 5MB",
+      "fileTypeError": "Please select an image file",
+      "uploadError": "Failed to upload image. Please try again."
+    },
+    "logout": {
+      "button": "Logout",
+      "loggingOut": "Logging out..."
+    },
+    "itemsPerPage": {
+      "label": "Items per Page",
+      "items": "items",
+      "description": "Choose how many items to display per page in inventory"
+    },
+    "languageSelector": {
+      "label": "Language",
+      "description": "Choose your preferred language for the interface"
+    }
+  }
+}

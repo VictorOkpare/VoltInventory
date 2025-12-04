@@ -1,9 +1,11 @@
 import React from 'react';
 import { useCurrency } from '@/app/hooks/useCurrency';
+import { useTranslations } from '@/app/hooks/useTranslations';
 import { Info } from 'lucide-react';
 
 export const CurrencyInfo = () => {
   const { userCurrency, getCurrencyCode } = useCurrency();
+  const { t } = useTranslations();
   const currencyCode = getCurrencyCode(userCurrency);
 
   if (currencyCode === 'NGN') {
@@ -15,10 +17,9 @@ export const CurrencyInfo = () => {
       <div className="flex items-start">
         <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-blue-700 dark:text-blue-300">
-          <p className="font-medium">Currency Conversion Active</p>
+          <p className="font-medium">{t('components.currencyInfo.title')}</p>
           <p className="text-xs mt-1">
-            Prices are stored in Nigerian Naira (NGN) and displayed in {currencyCode}. 
-            Exchange rates update hourly.
+            {t('components.currencyInfo.description').replace('{currency}', currencyCode)}
           </p>
         </div>
       </div>

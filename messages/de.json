@@ -1,0 +1,112 @@
+{
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Änderungen Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "add": "Hinzufügen",
+    "search": "Suchen",
+    "logout": "Abmelden"
+  },
+  "navigation": {
+    "home": "Dashboard",
+    "inventory": "Inventar",
+    "shelf": "Regal",
+    "reports": "Berichte",
+    "settings": "Einstellungen",
+    "help": "Hilfe",
+    "administrator": "Administrator"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "general": "Allgemeine Einstellungen",
+    "appearance": "Aussehen und Lokalisierung",
+    "dataManagement": "Datenverwaltung",
+    "signOut": "Abmelden",
+    "logoutDescription": "Von Ihrem Konto abmelden",
+    "defaultCurrency": "Standardwährung",
+    "lowStockThreshold": "Niedriger Lagerbestandsschwelle",
+    "autoGenerateSKU": "SKU Automatisch Generieren",
+    "autoGenerateSKUDescription": "Automatisch eine eindeutige SKU für neue Artikel erstellen",
+    "updateCategory": "Kategorie Aktualisieren",
+    "language": "Sprache",
+    "dateFormat": "Datumsformat",
+    "itemsPerPage": "Artikel pro Seite",
+    "theme": "Thema",
+    "themeDescription": "Zwischen hellem und dunklem Modus wechseln",
+    "exportData": "Daten Exportieren",
+    "exportDescription": "Alle Ihre Inventardaten als CSV-Datei exportieren",
+    "importData": "Daten via CSV Importieren",
+    "importDescription": "Inventardaten aus einer CSV-Datei importieren"
+  },
+  "inventory": {
+    "title": "Inventar",
+    "addProduct": "Produkt Hinzufügen",
+    "showing": "Anzeige",
+    "of": "von",
+    "results": "Ergebnissen",
+    "allCategories": "Alle Kategorien",
+    "productName": "Produktname",
+    "sku": "SKU",
+    "category": "Kategorie",
+    "quantity": "Menge",
+    "price": "Preis",
+    "actions": "Aktionen",
+    "noProducts": "Noch keine Produkte im Inventar.",
+    "noMatch": "Keine Produkte entsprechen Ihrer Suche.",
+    "noItems": "Keine Inventarartikel gefunden"
+  },
+  "product": {
+    "title": "Neues Produkt Hinzufügen",
+    "productName": "Produktname",
+    "description": "Beschreibung",
+    "category": "Kategorie",
+    "quantity": "Menge",
+    "unitPrice": "Stückpreis",
+    "sku": "SKU",
+    "image": "Produktbild",
+    "submit": "Produkt Hinzufügen",
+    "submitting": "Produkt wird hinzugefügt..."
+  },
+  "components": {
+    "categoryModal": {
+      "title": "Kategorien Aktualisieren",
+      "addNew": "Neue Kategorie Hinzufügen",
+      "enterName": "Kategorienamen eingeben",
+      "current": "Aktuelle Kategorien",
+      "saving": "Speichern..."
+    },
+    "currencyInfo": {
+      "title": "Währungsumrechnung Aktiv",
+      "description": "Preise werden in Nigerianischen Naira (NGN) gespeichert und in {currency} angezeigt. Wechselkurse werden stündlich aktualisiert."
+    },
+    "imageUpload": {
+      "title": "Produktbild Hochladen",
+      "uploading": "Hochladen...",
+      "uploadTitle": "Produktbild Hochladen",
+      "dragDrop": "Bild per Drag & Drop oder Klicken (Max 5MB)",
+      "pleaseWait": "Bitte warten",
+      "removeImage": "Bild Entfernen",
+      "selectImage": "Bild Auswählen",
+      "fileSizeError": "Bildgröße sollte kleiner als 5MB sein",
+      "fileTypeError": "Bitte wählen Sie eine Bilddatei",
+      "uploadError": "Fehler beim Hochladen des Bildes. Bitte versuchen Sie es erneut."
+    },
+    "logout": {
+      "button": "Abmelden",
+      "loggingOut": "Abmelden..."
+    },
+    "itemsPerPage": {
+      "label": "Elemente pro Seite",
+      "items": "Elemente",
+      "description": "Wählen Sie, wie viele Elemente pro Seite im Inventar angezeigt werden sollen"
+    },
+    "languageSelector": {
+      "label": "Sprache",
+      "description": "Wählen Sie Ihre bevorzugte Sprache für die Benutzeroberfläche"
+    }
+  }
+}

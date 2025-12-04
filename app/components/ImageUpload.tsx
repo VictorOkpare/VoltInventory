@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Upload, Loader2 } from 'lucide-react';
+import { useTranslations } from '@/app/hooks/useTranslations';
 
 interface ImageUploadProps {
   onImageChange: (imageUrl: string, preview: string) => void;
@@ -9,6 +10,7 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps) {
+  const { t } = useTranslations();
   const [imagePreview, setImagePreview] = useState<string>(currentPreview || '');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string>('');
@@ -49,14 +51,14 @@ export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps)
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      setUploadError('Please select an image file');
+      setUploadError(t('components.imageUpload.fileTypeError'));
       return;
     }
 
     // Validate file size (e.g., 5MB max)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
-      setUploadError('Image size should be less than 5MB');
+      setUploadError(t('components.imageUpload.fileSizeError'));
       return;
     }
 
@@ -76,7 +78,7 @@ export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps)
       onImageChange(imageUrl, imagePreview);
     } catch (error) {
       console.error('Upload error:', error);
-      setUploadError('Failed to upload image. Please try again.');
+      setUploadError(t('components.imageUpload.uploadError'));
       setImagePreview('');
     } finally {
       setIsUploading(false);
@@ -92,7 +94,7 @@ export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps)
   return (
     <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
-        Upload Product Image
+        {t('components.imageUpload.title')}
       </label>
       
       {uploadError && (
@@ -115,7 +117,7 @@ export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps)
               disabled={isUploading}
               className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 disabled:opacity-50"
             >
-              Remove Image
+              {t('components.imageUpload.removeImage')}
             </button>
           </div>
         ) : (
@@ -131,10 +133,10 @@ export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps)
             </div>
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {isUploading ? 'Uploading...' : 'Upload Product Image'}
+                {isUploading ? t('components.imageUpload.uploading') : t('components.imageUpload.uploadTitle')}
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {isUploading ? 'Please wait' : 'Drag & drop an image or click (Max 5MB)'}
+                {isUploading ? t('components.imageUpload.pleaseWait') : t('components.imageUpload.dragDrop')}
               </p>
             </div>
           </div>
@@ -156,7 +158,7 @@ export function ImageUpload({ onImageChange, currentPreview }: ImageUploadProps)
         disabled={isUploading}
         className="w-full mt-4 px-4 py-2 bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isUploading ? 'Uploading...' : 'Select Image'}
+        {isUploading ? t('components.imageUpload.uploading') : t('components.imageUpload.selectImage')}
       </button>
     </div>
   );

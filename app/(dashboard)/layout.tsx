@@ -15,17 +15,18 @@ import {
   Store
 } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { useTranslations } from '@/app/hooks/useTranslations';
 
 const navigation = [
-  { name: 'Dashboard', href: '/home', icon: LayoutDashboard },
-  { name: 'Inventory', href: '/inventory', icon: Package },
-  { name: 'Shelf', href: '/shelf', icon: Store },
-  { name: 'Reports', href: '/reports', icon: BarChart3 },
+  { name: 'home', href: '/home', icon: LayoutDashboard },
+  { name: 'inventory', href: '/inventory', icon: Package },
+  { name: 'shelf', href: '/shelf', icon: Store },
+  { name: 'reports', href: '/reports', icon: BarChart3 },
 ];
 
 const bottomNavigation = [
-  { name: 'Settings', href: '/settings', icon: Settings },
-  { name: 'Help', href: '/help', icon: HelpCircle },
+  { name: 'settings', href: '/settings', icon: Settings },
+  { name: 'help', href: '/help', icon: HelpCircle },
 ];
 
 export default function DashboardLayout({
@@ -33,6 +34,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { t } = useTranslations();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -87,7 +89,7 @@ export default function DashboardLayout({
                   }`}
                 >
                   <item.icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium">{t(`navigation.${item.name}`)}</span>
                 </Link>
               );
             })}
@@ -109,7 +111,7 @@ export default function DashboardLayout({
                   }`}
                 >
                   <item.icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <span className="font-medium">{t(`navigation.${item.name}`)}</span>
                 </Link>
               );
             })}
@@ -128,7 +130,7 @@ export default function DashboardLayout({
                   Admin Name
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  Administrator
+                  {t('navigation.administrator')}
                 </p>
               </div>
             </div>

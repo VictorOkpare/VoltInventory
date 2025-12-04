@@ -1,0 +1,112 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer les Modifications",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "search": "Rechercher",
+    "logout": "Déconnexion"
+  },
+  "navigation": {
+    "home": "Tableau de Bord",
+    "inventory": "Inventaire",
+    "shelf": "Étagère",
+    "reports": "Rapports",
+    "settings": "Paramètres",
+    "help": "Aide",
+    "administrator": "Administrateur"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "general": "Paramètres Généraux",
+    "appearance": "Apparence et Localisation",
+    "dataManagement": "Gestion des Données",
+    "signOut": "Se Déconnecter",
+    "logoutDescription": "Déconnectez-vous de votre compte",
+    "defaultCurrency": "Devise par Défaut",
+    "lowStockThreshold": "Seuil de Stock Faible",
+    "autoGenerateSKU": "Générer Automatiquement le SKU",
+    "autoGenerateSKUDescription": "Créer automatiquement un SKU unique pour les nouveaux articles",
+    "updateCategory": "Mettre à Jour la Catégorie",
+    "language": "Langue",
+    "dateFormat": "Format de Date",
+    "itemsPerPage": "Articles par Page",
+    "theme": "Thème",
+    "themeDescription": "Basculer entre le mode clair et sombre",
+    "exportData": "Exporter les Données",
+    "exportDescription": "Exporter toutes vos données d'inventaire sous forme de fichier CSV",
+    "importData": "Importer des Données via CSV",
+    "importDescription": "Importer des données d'inventaire depuis un fichier CSV"
+  },
+  "inventory": {
+    "title": "Inventaire",
+    "addProduct": "Ajouter un Produit",
+    "showing": "Affichage",
+    "of": "de",
+    "results": "résultats",
+    "allCategories": "Toutes les Catégories",
+    "productName": "Nom du Produit",
+    "sku": "SKU",
+    "category": "Catégorie",
+    "quantity": "Quantité",
+    "price": "Prix",
+    "actions": "Actions",
+    "noProducts": "Aucun produit dans l'inventaire pour le moment.",
+    "noMatch": "Aucun produit ne correspond à votre recherche.",
+    "noItems": "Aucun article d'inventaire trouvé"
+  },
+  "product": {
+    "title": "Ajouter un Nouveau Produit",
+    "productName": "Nom du Produit",
+    "description": "Description",
+    "category": "Catégorie",
+    "quantity": "Quantité",
+    "unitPrice": "Prix Unitaire",
+    "sku": "SKU",
+    "image": "Image du Produit",
+    "submit": "Ajouter le Produit",
+    "submitting": "Ajout du Produit..."
+  },
+  "components": {
+    "categoryModal": {
+      "title": "Mettre à Jour les Catégories",
+      "addNew": "Ajouter une Nouvelle Catégorie",
+      "enterName": "Entrez le nom de la catégorie",
+      "current": "Catégories Actuelles",
+      "saving": "Enregistrement..."
+    },
+    "currencyInfo": {
+      "title": "Conversion de Devise Active",
+      "description": "Les prix sont stockés en Naira Nigérian (NGN) et affichés en {currency}. Les taux de change sont mis à jour toutes les heures."
+    },
+    "imageUpload": {
+      "title": "Télécharger l'Image du Produit",
+      "uploading": "Téléchargement...",
+      "uploadTitle": "Télécharger l'Image du Produit",
+      "dragDrop": "Glissez-déposez une image ou cliquez (Max 5 Mo)",
+      "pleaseWait": "Veuillez patienter",
+      "removeImage": "Supprimer l'Image",
+      "selectImage": "Sélectionner l'Image",
+      "fileSizeError": "La taille de l'image doit être inférieure à 5 Mo",
+      "fileTypeError": "Veuillez sélectionner un fichier image",
+      "uploadError": "Échec du téléchargement de l'image. Veuillez réessayer."
+    },
+    "logout": {
+      "button": "Déconnexion",
+      "loggingOut": "Déconnexion en cours..."
+    },
+    "itemsPerPage": {
+      "label": "Éléments par Page",
+      "items": "éléments",
+      "description": "Choisissez combien d'éléments afficher par page dans l'inventaire"
+    },
+    "languageSelector": {
+      "label": "Langue",
+      "description": "Choisissez votre langue préférée pour l'interface"
+    }
+  }
+}
