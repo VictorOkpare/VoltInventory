@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { ImageUpload } from '@/app/components/ImageUpload';
@@ -19,15 +19,10 @@ interface ProductFormData {
   imageUrl: string;
 }
 
-const categories = [
-  'Electronics',
-  'Clothing',
-  'Kitchenware',
-  'Furniture',
-  'Toys',
-  'Sports',
-  'Other',
-];
+interface CategoriesResponse {
+  success: boolean;
+  categories: string[];
+}
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -47,6 +42,27 @@ export default function AddProductPage() {
       imageUrl: '',
     },
   });
+
+  // Fetch categories
+  const { data: categoriesData } = useQuery<CategoriesResponse>({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await axios.get('/api/inventory/categories', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+  });
+
+  const categories = categoriesData?.categories || [];
 
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (data: ProductFormData) => {

@@ -26,12 +26,36 @@ interface InventoryResponse {
   items: InventoryItem[];
 }
 
-const categories = ['All Categories', 'Kitchenware', 'Apparel', 'Electronics', 'Books', 'Furniture', 'Toys', 'Sports', 'Other'];
+interface CategoriesResponse {
+  success: boolean;
+  categories: string[];
+}
 
 export default function InventoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Fetch categories
+  const { data: categoriesData } = useQuery<CategoriesResponse>({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await axios.get('/api/inventory/categories', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+  });
+
+  const categories = ['All Categories', ...(categoriesData?.categories || [])];
 
   const { data, isLoading, error } = useQuery<InventoryResponse>({
     queryKey: ['inventory'],
@@ -123,24 +147,6 @@ export default function InventoryPage() {
             ))}
           </select>
 
-          {/* Additional Filters */}
-          <select className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all">
-            <option>Kitchenware</option>
-            <option>Apparel</option>
-            <option>Electronics</option>
-          </select>
-
-          <select className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all">
-            <option>Apparel</option>
-            <option>Electronics</option>
-            <option>Books</option>
-          </select>
-
-          <select className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all">
-            <option>Electronics</option>
-            <option>Books</option>
-            <option>Kitchenware</option>
-          </select>
         </div>
       </div>
 
