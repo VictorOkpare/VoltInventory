@@ -23,7 +23,7 @@ export default function RegisterPage() {
       return response.data;
     },
     onSuccess: () => {
-      router.push('/authentication/login');
+      router.push('/login');
     },
   });
 
@@ -203,7 +203,7 @@ export default function RegisterPage() {
           <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             Already have an account?{' '}
             <Link 
-              href="/authentication/login" 
+              href="/login" 
               className="font-semibold text-[#162660] dark:text-[#D0E6FD] hover:underline"
             >
               Log In

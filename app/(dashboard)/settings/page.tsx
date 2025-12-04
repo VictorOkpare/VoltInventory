@@ -5,15 +5,25 @@ import { useRouter } from 'next/navigation';
 import { LogOut, Download, Upload, Plus, X, Loader2 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import CurrencySelector from '@/app/components/CurrencySelector';
+import { useCurrency } from '@/app/hooks/useCurrency';
 
 interface CategoriesResponse {
   success: boolean;
   categories: string[];
 }
 
+interface SettingsResponse {
+  success: boolean;
+  settings: {
+    defaultCurrency: string;
+  };
+}
+
 export default function SettingsPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { setUserCurrency } = useCurrency();
   const [defaultCurrency, setDefaultCurrency] = useState('USD - US Dollar');
   const [lowStockThreshold, setLowStockThreshold] = useState('10');
   const [autoGenerateSKU, setAutoGenerateSKU] = useState(true);
@@ -24,6 +34,65 @@ export default function SettingsPage() {
   const [newCategory, setNewCategory] = useState('');
   const [editingCategories, setEditingCategories] = useState<string[]>([]);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+  // Fetch user settings
+  const { data: settingsData } = useQuery<SettingsResponse>({
+    queryKey: ['userSettings'],
+    queryFn: async () => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await axios.get('/api/auth/settings', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Update settings when data is loaded
+  React.useEffect(() => {
+    if (settingsData?.settings?.defaultCurrency) {
+      setDefaultCurrency(settingsData.settings.defaultCurrency);
+      setUserCurrency(settingsData.settings.defaultCurrency); // Sync with Zustand store
+    }
+  }, [settingsData, setUserCurrency]);
+
+  // Update currency mutation
+  const { mutate: saveCurrency } = useMutation({
+    mutationFn: async (currency: string) => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await axios.put('/api/auth/settings', 
+        { defaultCurrency: currency },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userSettings'] });
+    },
+  });
+
+  // Handle currency change
+  const handleCurrencyChange = (currency: string) => {
+    setDefaultCurrency(currency);
+    setUserCurrency(currency); // Update Zustand store
+    saveCurrency(currency);
+  };
 
   // Fetch categories
   const { data: categoriesData } = useQuery<CategoriesResponse>({
@@ -126,21 +195,10 @@ export default function SettingsPage() {
           <div className="space-y-6">
             {/* Default Currency & Low Stock Threshold */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-[#162660] dark:text-gray-300 mb-2">
-                  Default Currency
-                </label>
-                <select
-                  value={defaultCurrency}
-                  onChange={(e) => setDefaultCurrency(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
-                >
-                  <option>USD - US Dollar</option>
-                  <option>NGN - Nigerian Naira</option>
-                  <option>EUR - Euro</option>
-                  <option>GBP - British Pound</option>
-                </select>
-              </div>
+              <CurrencySelector 
+                value={defaultCurrency}
+                onChange={handleCurrencyChange}
+              />
 
               <div>
                 <label className="block text-sm font-medium text-[#162660] dark:text-gray-300 mb-2">

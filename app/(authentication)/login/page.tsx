@@ -26,7 +26,7 @@ export default function LoginPage() {
       console.log('Login successful:', data);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      router.push('/dashboard'); // Redirect to dashboard after login
+      router.push('/inventory'); // Redirect to dashboard after login
     },
   });
 

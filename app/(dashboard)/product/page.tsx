@@ -8,6 +8,8 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import { ImageUpload } from '@/app/components/ImageUpload';
+import { useCurrency } from '@/app/hooks/useCurrency';
+import { CurrencyInfo } from '@/app/components/CurrencyInfo';
 
 interface ProductFormData {
   productName: string;
@@ -26,6 +28,7 @@ interface CategoriesResponse {
 
 export default function AddProductPage() {
   const router = useRouter();
+  const { convertToBase, userCurrency, getCurrencySymbol } = useCurrency();
   const {
     register,
     handleSubmit,
@@ -63,7 +66,6 @@ export default function AddProductPage() {
   });
 
   const categories = categoriesData?.categories || [];
-
   const { mutate, isPending, error } = useMutation({
     mutationFn: async (data: ProductFormData) => {
       const token = localStorage.getItem('token');
@@ -72,12 +74,15 @@ export default function AddProductPage() {
         throw new Error('No authentication token found');
       }
 
+      // Convert price from user currency to NGN (base currency)
+      const priceInNGN = convertToBase(data.unitPrice, userCurrency);
+
       const response = await axios.post('/api/inventory', {
         productName: data.productName,
         description: data.description,
         category: data.category,
         quantity: data.quantity,
-        unitPrice: data.unitPrice,
+        unitPrice: priceInNGN, // Send price in NGN
         sku: data.sku,
         imageUrl: data.imageUrl,
       }, {
@@ -119,6 +124,8 @@ export default function AddProductPage() {
           {(error as any).response?.data?.message || 'Failed to add product. Please try again.'}
         </div>
       )}
+
+      <CurrencyInfo />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -250,7 +257,7 @@ export default function AddProductPage() {
 
                 <div>
                   <label htmlFor="unitPrice" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Unit Price ($)
+                    Unit Price ({getCurrencySymbol()})
                   </label>
                   <input
                     type="number"

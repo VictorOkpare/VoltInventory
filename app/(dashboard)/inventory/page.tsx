@@ -5,6 +5,7 @@ import { Search, Plus, Edit, Trash2, ChevronLeft, ChevronRight, Loader2 } from '
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
+import { useCurrency } from '@/app/hooks/useCurrency';
 
 interface InventoryItem {
   _id: string;
@@ -35,6 +36,7 @@ export default function InventoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [currentPage, setCurrentPage] = useState(1);
+  const { convertFromBase, formatCurrency } = useCurrency();
 
   // Fetch categories
   const { data: categoriesData } = useQuery<CategoriesResponse>({
@@ -219,7 +221,7 @@ export default function InventoryPage() {
                         {item.quantity}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        NGN{item.unitPrice.toFixed(2)}
+                        {formatCurrency(convertFromBase(item.unitPrice, 'NGN'))}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex items-center space-x-2">

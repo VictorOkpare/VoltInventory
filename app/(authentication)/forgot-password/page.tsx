@@ -54,7 +54,7 @@ export default function ForgotPasswordPage() {
             </button>
             <div className="block">
               <Link 
-                href="/authentication/login" 
+                href="/login" 
                 className="inline-flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />

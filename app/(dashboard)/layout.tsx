@@ -17,15 +17,15 @@ import {
 import { ThemeToggle } from '../components/ThemeToggle';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard/home', icon: LayoutDashboard },
-  { name: 'Inventory', href: '/dashboard/inventory', icon: Package },
-  { name: 'Shelf', href: '/dashboard/shelf', icon: Store },
-  { name: 'Reports', href: '/dashboard/reports', icon: BarChart3 },
+  { name: 'Dashboard', href: '/home', icon: LayoutDashboard },
+  { name: 'Inventory', href: '/inventory', icon: Package },
+  { name: 'Shelf', href: '/shelf', icon: Store },
+  { name: 'Reports', href: '/reports', icon: BarChart3 },
 ];
 
 const bottomNavigation = [
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-  { name: 'Help', href: '/dashboard/help', icon: HelpCircle },
+  { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Help', href: '/help', icon: HelpCircle },
 ];
 
 export default function DashboardLayout({
