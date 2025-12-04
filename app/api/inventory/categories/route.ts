@@ -34,3 +34,36 @@ export async function GET(request: Request) {
     );
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const authHeader = request.headers.get('authorization');
+
+    if (!authHeader) {
+      return NextResponse.json(
+        { message: 'Authorization header is required' },
+        { status: 401 }
+      );
+    }
+
+    const response = await axios.put(`${EXTERNAL_API_URL}/inventory/categories`, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': authHeader,
+      },
+    });
+
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error: any) {
+    console.error('Update categories error:', error.response?.data || error.message);
+    
+    const status = error.response?.status || 500;
+    const message = error.response?.data?.message || 'Internal Server Error';
+    
+    return NextResponse.json(
+      { message },
+      { status }
+    );
+  }
+}
