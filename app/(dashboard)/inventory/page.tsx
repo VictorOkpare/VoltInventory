@@ -107,7 +107,7 @@ export default function InventoryPage() {
           </p>
         </div>
         <Link 
-          href="/dashboard/product"
+          href="/product"
           className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-[#162660] hover:bg-[#162660]/90 text-white font-semibold rounded-lg shadow-md transition-all"
         >
           <Plus className="w-5 h-5 mr-2" />
