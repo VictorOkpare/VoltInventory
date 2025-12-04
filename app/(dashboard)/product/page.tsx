@@ -93,7 +93,7 @@ export default function AddProductPage() {
       return response.data;
     },
     onSuccess: () => {
-      router.push('/dashboard/inventory');
+      router.push('/inventory');
     },
   });
 
