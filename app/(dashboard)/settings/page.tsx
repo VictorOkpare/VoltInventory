@@ -137,7 +137,6 @@ export default function SettingsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       setShowCategoryModal(false);
-      setEditingCategories([]);
     },
   });
 
