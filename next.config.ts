@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental:{
-    turbopackFileSystemCacheForDev:true,
-  },
+  productionBrowserSourceMaps: false,
   images:{
     remotePatterns:[
       {
@@ -13,7 +11,16 @@ const nextConfig: NextConfig = {
         port:"",
       }
     ]
-  }
+  },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
