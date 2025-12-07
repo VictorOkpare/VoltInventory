@@ -133,6 +133,7 @@ export const useCurrencyStore = create<CurrencyState>()(
     }),
     {
       name: 'currency-storage',
+      skipHydration: true,
       partialize: (state) => ({
         userCurrency: state.userCurrency,
         exchangeRates: state.exchangeRates,

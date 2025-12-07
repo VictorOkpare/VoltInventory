@@ -18,6 +18,7 @@ export const useLanguageStore = create<LanguageState>()(
     }),
     {
       name: 'language-storage',
+      skipHydration: true,
       partialize: (state) => ({
         locale: state.locale,
       }),
