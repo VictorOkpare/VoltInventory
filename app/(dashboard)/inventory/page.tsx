@@ -1,13 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { Search, Plus, Edit, Trash2, Loader2 } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 import { useCurrency } from '@/app/hooks/useCurrency';
 import { useSettingsStore } from '@/app/store/settingsStore';
 import { useTranslations } from '@/app/hooks/useTranslations';
+import Pagination from '@/app/components/Pagination';
+import EditInventoryModal from '@/app/components/EditInventoryModal';
+import DeleteConfirmationModal from '@/app/components/DeleteConfirmationModal';
+import SuccessModal from '@/app/components/SuccessModal';
 
 interface InventoryItem {
   _id: string;
@@ -36,9 +40,14 @@ interface CategoriesResponse {
 
 export default function InventoryPage() {
   const { t } = useTranslations();
+  const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
+  const [deletingItem, setDeletingItem] = useState<InventoryItem | null>(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { convertFromBase, formatCurrency, userCurrency } = useCurrency();
   const { itemsPerPage } = useSettingsStore();
 
@@ -81,10 +90,56 @@ export default function InventoryPage() {
     },
   });
 
+  // Update item mutation
+  const { mutateAsync: updateItem, isPending: isUpdating } = useMutation({
+    mutationFn: async (item: Omit<InventoryItem, 'userId' | 'createdAt' | 'updatedAt'>) => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await axios.put(`/api/inventory/${item._id}`, item, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['inventory'] });
+      setEditingItem(null);
+      setSuccessMessage(t('inventory.productUpdated'));
+      setShowSuccessModal(true);
+    },
+  });
+
+  // Delete item mutation
+  const { mutateAsync: deleteItem, isPending: isDeleting } = useMutation({
+    mutationFn: async (itemId: string) => {
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await axios.delete(`/api/inventory/${itemId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['inventory'] });
+      setDeletingItem(null);
+      setSuccessMessage(t('inventory.productDeleted'));
+      setShowSuccessModal(true);
+    },
+  });
+
   const inventory = data?.items || [];
   const totalResults = data?.count || 0;
-  const resultsPerPage = itemsPerPage;
-  const totalPages = Math.ceil(totalResults / resultsPerPage);
 
   // Filter inventory based on search and category
   const filteredInventory = inventory.filter((item) => {
@@ -97,6 +152,17 @@ export default function InventoryPage() {
     
     return matchesSearch && matchesCategory;
   });
+
+  // Reset to page 1 when search, category, or items per page changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory, itemsPerPage]);
+
+  // Calculate pagination based on filtered results
+  const filteredTotalPages = Math.ceil(filteredInventory.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedInventory = filteredInventory.slice(startIndex, endIndex);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -195,7 +261,7 @@ export default function InventoryPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-                  {filteredInventory.map((item) => (
+                  {paginatedInventory.map((item) => (
                     <tr key={item._id} className="hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -229,10 +295,16 @@ export default function InventoryPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <div className="flex items-center space-x-2">
-                          <button className="p-1.5 text-gray-400 hover:text-[#162660] dark:hover:text-[#D0E6FD] transition-colors">
+                          <button 
+                            onClick={() => setEditingItem(item)}
+                            className="p-1.5 text-gray-400 hover:text-[#162660] dark:hover:text-[#D0E6FD] transition-colors"
+                          >
                             <Edit className="w-4 h-4" />
                           </button>
-                          <button className="p-1.5 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                          <button 
+                            onClick={() => setDeletingItem(item)}
+                            className="p-1.5 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                          >
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -244,48 +316,46 @@ export default function InventoryPage() {
             </div>
 
             {/* Pagination */}
-            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                {t('inventory.showing')} {filteredInventory.length} {t('inventory.of')} {totalResults} {t('inventory.results')}
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                  disabled={currentPage === 1}
-                  className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                
-                {[1, 2, 3, '...', 8, 9, 10].map((page, index) => (
-                  <button
-                    key={index}
-                    onClick={() => typeof page === 'number' && setCurrentPage(page)}
-                    disabled={page === '...'}
-                    className={`min-w-[2.5rem] px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      page === currentPage
-                        ? 'bg-[#162660] text-white'
-                        : page === '...'
-                        ? 'text-gray-400 cursor-default'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
-                
-                <button
-                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                  disabled={currentPage === totalPages}
-                  className="p-2 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
+            <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={filteredTotalPages}
+                onPageChange={setCurrentPage}
+                totalResults={filteredInventory.length}
+                displayedResults={paginatedInventory.length}
+                resultLabel={t('inventory.results')}
+              />
             </div>
           </>
         )}
       </div>
+
+      {/* Edit Modal */}
+      <EditInventoryModal
+        isOpen={!!editingItem}
+        onClose={() => setEditingItem(null)}
+        item={editingItem}
+        categories={categories}
+        onSave={updateItem}
+        isPending={isUpdating}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={!!deletingItem}
+        onClose={() => setDeletingItem(null)}
+        itemName={deletingItem?.productName || ''}
+        onConfirm={() => deletingItem ? deleteItem(deletingItem._id) : Promise.resolve()}
+        isPending={isDeleting}
+      />
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        message={successMessage}
+        autoClose={2000}
+      />
     </div>
   );
 }
