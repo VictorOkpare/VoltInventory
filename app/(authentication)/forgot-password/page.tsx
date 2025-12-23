@@ -14,7 +14,7 @@ export default function ForgotPasswordPage() {
     mutationFn: async (email: string) => {
       // We send the email and the current origin as the clientUrl
       // This allows the backend to construct a link like: https://frontend.com/reset-password?token=...
-      const clientUrl = `${window.location.origin}/authentication/reset-password`;
+      const clientUrl = `${window.location.origin}/reset-password`;
       
       const response = await axios.post('/api/auth/forgot-password', { 
         email,
@@ -122,7 +122,7 @@ export default function ForgotPasswordPage() {
           {/* Back to Login */}
           <div className="text-center">
             <Link 
-              href="/authentication/login" 
+              href="/login" 
               className="inline-flex items-center justify-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />

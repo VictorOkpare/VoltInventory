@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://volt-inventory-m9um.vercel.app/api';
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://volt-inventory.vercel.app/api';
 
     const response = await fetch(`${backendUrl}/auth/logout`, {
       method: 'POST',

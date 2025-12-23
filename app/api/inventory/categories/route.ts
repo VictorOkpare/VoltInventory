@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const EXTERNAL_API_URL = 'https://volt-inventory-m9um.vercel.app/api';
+const EXTERNAL_API_URL = 'https://volt-inventory.vercel.app/api';
 
 export async function GET(request: Request) {
   try {

@@ -83,7 +83,7 @@ export default function LoginPage() {
                 Password
               </label>
               <Link 
-                href="/authentication/forgot-password" 
+                href="/forgot-password" 
                 className="text-xs font-medium text-[#162660] dark:text-[#D0E6FD] hover:underline"
               >
                 Forgot Password?
@@ -137,7 +137,7 @@ export default function LoginPage() {
           <div className="text-center text-sm text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
             <Link 
-              href="/authentication/register" 
+              href="/register" 
               className="font-semibold text-[#162660] dark:text-[#D0E6FD] hover:underline"
             >
               Create Account

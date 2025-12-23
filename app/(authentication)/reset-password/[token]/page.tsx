@@ -31,7 +31,7 @@ function ResetPasswordForm() {
     onSuccess: () => {
       setIsSuccess(true);
       setTimeout(() => {
-        router.push('/authentication/login');
+        router.push('/login');
       }, 2000);
     },
   });
@@ -63,7 +63,7 @@ function ResetPasswordForm() {
           This password reset link is invalid or has expired.
         </p>
         <Link 
-          href="/authentication/forgot-password" 
+          href="/forgot-password" 
           className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#162660] hover:bg-[#162660]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#162660]"
         >
           Request New Link
@@ -85,7 +85,7 @@ function ResetPasswordForm() {
           Your password has been successfully reset. Redirecting to login...
         </p>
         <Link 
-          href="/authentication/login" 
+          href="/login" 
           className="text-[#162660] dark:text-[#D0E6FD] font-medium hover:underline"
         >
           Click here if you are not redirected

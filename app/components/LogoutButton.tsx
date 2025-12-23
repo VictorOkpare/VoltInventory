@@ -37,7 +37,7 @@ export default function LogoutButton({ className = '', variant = 'default' }: Lo
       // Clear local storage and redirect
       localStorage.removeItem('token');
       setIsLoggingOut(false);
-      router.push('/authentication/login');
+      router.push('/login');
     }
   };
 
