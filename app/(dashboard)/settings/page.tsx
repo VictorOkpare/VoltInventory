@@ -13,6 +13,7 @@ import LanguageSelector from '@/app/components/LanguageSelector';
 import { ThemeToggle } from '@/app/components/ThemeToggle';
 import { useCurrency } from '@/app/hooks/useCurrency';
 import { useTranslations } from '@/app/hooks/useTranslations';
+import { useSettingsStore } from '@/app/store/settingsStore';
 
 interface CategoriesResponse {
   success: boolean;
@@ -31,9 +32,9 @@ export default function SettingsPage() {
   const queryClient = useQueryClient();
   const { setUserCurrency } = useCurrency();
   const { t } = useTranslations();
+  const { autoGenerateSKU, setAutoGenerateSKU } = useSettingsStore();
   const [defaultCurrency, setDefaultCurrency] = useState('USD - US Dollar');
   const [lowStockThreshold, setLowStockThreshold] = useState('10');
-  const [autoGenerateSKU, setAutoGenerateSKU] = useState(true);
   const [dateFormat, setDateFormat] = useState('MM/DD/YYYY');
   const [showCategoryModal, setShowCategoryModal] = useState(false);
 

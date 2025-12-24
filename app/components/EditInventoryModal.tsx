@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Loader2 } from 'lucide-react';
+import { X, Upload, Loader2, Package } from 'lucide-react';
 import { useCurrency } from '@/app/hooks/useCurrency';
 import { useTranslations } from '@/app/hooks/useTranslations';
 
@@ -91,17 +91,22 @@ export default function EditInventoryModal({
   if (!isOpen || !formData) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-800">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-slate-800">
         {/* Header */}
-        <div className="sticky top-0 bg-white dark:bg-slate-900 px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {t('inventory.editProduct')}
-          </h2>
+        <div className="sticky top-0 bg-gradient-to-r from-[#162660] to-[#162660]/80 dark:from-slate-800 dark:to-slate-900 px-6 py-5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-[#D0E6FD] dark:bg-[#162660]/30 rounded-lg">
+              <Package className="w-5 h-5 text-[#162660] dark:text-[#D0E6FD]" />
+            </div>
+            <h2 className="text-xl font-bold text-white">
+              {t('inventory.editProduct')}
+            </h2>
+          </div>
           <button
             onClick={onClose}
             disabled={isPending}
-            className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50"
+            className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg disabled:opacity-50 transition-all"
           >
             <X className="w-6 h-6" />
           </button>
@@ -111,7 +116,7 @@ export default function EditInventoryModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Product Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
               {t('inventory.productName')}
             </label>
             <input
@@ -119,7 +124,7 @@ export default function EditInventoryModal({
               name="productName"
               value={formData.productName}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
               required
             />
           </div>
@@ -127,7 +132,7 @@ export default function EditInventoryModal({
           {/* SKU and Quantity */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
                 {t('inventory.sku')}
               </label>
               <input
@@ -135,12 +140,12 @@ export default function EditInventoryModal({
                 name="sku"
                 value={formData.sku}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
                 {t('inventory.quantity')}
               </label>
               <input
@@ -149,7 +154,7 @@ export default function EditInventoryModal({
                 value={formData.quantity}
                 onChange={handleChange}
                 min="0"
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
                 required
               />
             </div>
@@ -158,14 +163,14 @@ export default function EditInventoryModal({
           {/* Category and Price */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
                 {t('inventory.category')}
               </label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
                 required
               >
                 <option value="">Select a category</option>
@@ -177,7 +182,7 @@ export default function EditInventoryModal({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
                 {t('inventory.price')}
               </label>
               <input
@@ -187,7 +192,7 @@ export default function EditInventoryModal({
                 onChange={handleChange}
                 min="0"
                 step="0.01"
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all"
                 required
               />
             </div>
@@ -195,7 +200,7 @@ export default function EditInventoryModal({
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
               {t('inventory.description')}
             </label>
             <textarea
@@ -203,18 +208,18 @@ export default function EditInventoryModal({
               value={formData.description}
               onChange={handleChange}
               rows={4}
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all resize-none"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-[#162660] focus:border-transparent outline-none transition-all resize-none"
             />
           </div>
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] mb-2.5">
               {t('inventory.image')}
             </label>
             <div className="space-y-4">
               {imagePreview && (
-                <div className="w-full h-40 rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-800">
+                <div className="w-full h-48 rounded-xl overflow-hidden bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
                   <img
                     src={imagePreview}
                     alt="Preview"
@@ -222,10 +227,12 @@ export default function EditInventoryModal({
                   />
                 </div>
               )}
-              <label className="flex items-center justify-center w-full px-4 py-2.5 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-                <div className="flex items-center space-x-2">
-                  <Upload className="w-5 h-5 text-gray-400" />
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+              <label className="flex items-center justify-center w-full px-4 py-4 border-2 border-dashed border-[#162660]/30 dark:border-[#D0E6FD]/30 rounded-xl cursor-pointer hover:bg-[#D0E6FD]/5 dark:hover:bg-[#162660]/10 transition-all">
+                <div className="flex flex-col items-center space-y-2">
+                  <div className="p-2.5 bg-[#D0E6FD]/20 dark:bg-[#162660]/20 rounded-lg">
+                    <Upload className="w-5 h-5 text-[#162660] dark:text-[#D0E6FD]" />
+                  </div>
+                  <span className="text-sm font-medium text-[#162660] dark:text-[#D0E6FD]">
                     {t('inventory.uploadImage')}
                   </span>
                 </div>
@@ -241,19 +248,19 @@ export default function EditInventoryModal({
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-3 pt-6 border-t border-gray-100 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
               disabled={isPending}
-              className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-50 transition-colors"
+              className="flex-1 px-4 py-3 border border-gray-300 dark:border-slate-700 text-[#162660] dark:text-[#D0E6FD] font-semibold rounded-xl hover:bg-gray-50 dark:hover:bg-slate-800/50 disabled:opacity-50 transition-all"
             >
               {t('common.cancel')}
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 px-4 py-2.5 bg-[#162660] hover:bg-[#162660]/90 text-white font-medium rounded-lg disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
+              className="flex-1 px-4 py-3 bg-[#162660] hover:bg-[#162660]/90 text-white font-semibold rounded-xl disabled:opacity-50 flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg"
             >
               {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
               {t('common.save')}

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import { ImageUpload } from '@/app/components/ImageUpload';
 import { useCurrency } from '@/app/hooks/useCurrency';
 import { CurrencyInfo } from '@/app/components/CurrencyInfo';
 import { useTranslations } from '@/app/hooks/useTranslations';
+import { useSettingsStore } from '@/app/store/settingsStore';
 
 interface ProductFormData {
   productName: string;
@@ -31,10 +32,14 @@ export default function AddProductPage() {
   const router = useRouter();
   const { t } = useTranslations();
   const { convertToBase, userCurrency, getCurrencySymbol } = useCurrency();
+  const { autoGenerateSKU } = useSettingsStore();
+  const [selectedCategory, setSelectedCategory] = useState('');
+  
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<ProductFormData>({
     defaultValues: {
@@ -47,6 +52,30 @@ export default function AddProductPage() {
       imageUrl: '',
     },
   });
+
+  const watchCategory = watch('category');
+
+  // Generate SKU based on category
+  const generateSKU = (category: string): string => {
+    if (!category) return '';
+    
+    // Get first two letters of category and uppercase them
+    const prefix = category.substring(0, 2).toUpperCase();
+    
+    // Generate a random 3-digit number
+    const randomNumber = Math.floor(Math.random() * 900) + 100; // 100-999
+    
+    return `${prefix}-${randomNumber}`;
+  };
+
+  // Auto-generate SKU when category changes
+  useEffect(() => {
+    if (autoGenerateSKU && watchCategory) {
+      const newSKU = generateSKU(watchCategory);
+      setValue('sku', newSKU);
+      setSelectedCategory(watchCategory);
+    }
+  }, [watchCategory, autoGenerateSKU, setValue]);
 
   // Fetch categories
   const { data: categoriesData } = useQuery<CategoriesResponse>({
@@ -213,20 +242,33 @@ export default function AddProductPage() {
                 <div>
                   <label htmlFor="sku" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     {t('product.sku')}
+                    {autoGenerateSKU && selectedCategory && (
+                      <span className="ml-2 text-xs font-normal text-green-600 dark:text-green-400">
+                        (Auto-generated)
+                      </span>
+                    )}
                   </label>
                   <input
                     type="text"
                     id="sku"
                     {...register('sku', { required: 'SKU is required' })}
-                    placeholder="e.g. HP-001"
+                    placeholder="e.g. CL-204"
+                    readOnly={autoGenerateSKU && !!selectedCategory}
                     className={`w-full px-4 py-3 rounded-lg border ${
                       errors.sku 
                         ? 'border-red-500 focus:ring-red-500' 
                         : 'border-gray-300 dark:border-gray-700 focus:ring-[#162660]'
-                    } bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:border-transparent outline-none transition-all placeholder:text-gray-400`}
+                    } bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:border-transparent outline-none transition-all placeholder:text-gray-400 ${
+                      autoGenerateSKU && selectedCategory ? 'cursor-not-allowed opacity-75' : ''
+                    }`}
                   />
                   {errors.sku && (
                     <p className="mt-1 text-xs text-red-500">{errors.sku.message}</p>
+                  )}
+                  {autoGenerateSKU && selectedCategory && (
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      Generated from {selectedCategory} category
+                    </p>
                   )}
                 </div>
               </div>
