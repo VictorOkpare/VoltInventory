@@ -22,11 +22,16 @@ export default function LoginPage() {
     },
     onSuccess: (data) => {
       // Store token and user info (e.g., in localStorage or a global store)
-      // For now, we'll just log it and redirect
       console.log('Login successful:', data);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      router.push('/inventory'); // Redirect to dashboard after login
+      
+      // Redirect based on role
+      if (data.user.role === 'MAIN_ADMIN') {
+        router.push('/home');
+      } else {
+        router.push('/inventory');
+      }
     },
   });
 

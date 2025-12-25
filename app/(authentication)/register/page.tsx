@@ -10,9 +10,11 @@ import { useMutation } from '@tanstack/react-query';
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
+    companyName: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState<'Weak' | 'Medium' | 'Strong'>('Weak');
@@ -26,6 +28,10 @@ export default function RegisterPage() {
       router.push('/login');
     },
   });
+
+  // Check if error is about company already having admin
+  const isCompanyHasAdmin = (error as any)?.response?.data?.message?.includes('already exists') || 
+                           (error as any)?.response?.data?.message?.includes('Company');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -89,24 +95,73 @@ export default function RegisterPage() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
-            {(error as any).response?.data?.message || 'Something went wrong. Please try again.'}
+          <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <p className="text-red-600 dark:text-red-400 text-sm font-medium mb-2">
+              {(error as any).response?.data?.message || 'Something went wrong. Please try again.'}
+            </p>
+            {isCompanyHasAdmin && (
+              <div className="mt-3 pt-3 border-t border-red-200 dark:border-red-800">
+                <p className="text-sm text-red-600 dark:text-red-400 mb-2">
+                  This company already has a registered account.
+                </p>
+                <Link 
+                  href="/login" 
+                  className="inline-block text-sm font-semibold text-[#162660] dark:text-[#D0E6FD] hover:underline"
+                >
+                  Click here to login →
+                </Link>
+              </div>
+            )}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Full Name */}
+          {/* First Name */}
           <div className="space-y-2">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Full Name
+            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              First Name
             </label>
             <input
-              id="name"
-              name="name"
+              id="firstName"
+              name="firstName"
               type="text"
-              placeholder="e.g., Jane Doe"
+              placeholder="e.g., Jane"
               required
-              value={formData.name}
+              value={formData.firstName}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-royal-blue focus:border-transparent outline-none transition-all placeholder:text-gray-400"
+            />
+          </div>
+
+          {/* Last Name */}
+          <div className="space-y-2">
+            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              name="lastName"
+              type="text"
+              placeholder="e.g., Doe"
+              required
+              value={formData.lastName}
+              onChange={handleChange}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-royal-blue focus:border-transparent outline-none transition-all placeholder:text-gray-400"
+            />
+          </div>
+
+          {/* Company Name */}
+          <div className="space-y-2">
+            <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Company Name
+            </label>
+            <input
+              id="companyName"
+              name="companyName"
+              type="text"
+              placeholder="e.g., Acme Corporation"
+              required
+              value={formData.companyName}
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-royal-blue focus:border-transparent outline-none transition-all placeholder:text-gray-400"
             />
